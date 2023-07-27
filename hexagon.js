@@ -22,38 +22,38 @@ function HexagonGrid(canvasId, radius) {
     );
 }
 
-/* HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isDebug) {
+HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY) {
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
-    
+
     var currentHexX;
     var currentHexY;
-    var debugText = "";
 
     var offsetColumn = false;
 
     for (var col = 0; col < cols; col++) {
         for (var row = 0; row < rows; row++) {
-
             if (!offsetColumn) {
-                currentHexX = (col * this.side) + originX;
-                currentHexY = (row * this.height) + originY;
+                currentHexX = col * this.side + originX;
+                currentHexY = row * this.height + originY;
             } else {
                 currentHexX = col * this.side + originX;
-                currentHexY = (row * this.height) + originY + (this.height * 0.5);
+                currentHexY = row * this.height + originY + this.height * 0.5;
             }
 
-            if (isDebug) {
-                debugText = col + "," + row;
-            }
-
-            this.drawHex(currentHexX, currentHexY, "#ddd", debugText);
+            this.drawHex(currentHexX, currentHexY, "", "#DFE4E6");
         }
         offsetColumn = !offsetColumn;
     }
-}; */
+};
 
-HexagonGrid.prototype.drawHexAtColRow = function (column, row, color, bcolor) {
+HexagonGrid.prototype.drawHexAtColRow = function (
+    column,
+    row,
+    color,
+    bcolor,
+    state
+) {
     if (bcolor == "black") {
         this.drawHexAtColRow(column, row - 1, "", "blue");
         this.drawHexAtColRow(column, row + 1, "", "blue");
@@ -70,6 +70,10 @@ HexagonGrid.prototype.drawHexAtColRow = function (column, row, color, bcolor) {
 
     column = column + Math.round(window.innerWidth / 160);
     row = row + Math.round(window.innerHeight / 190);
+
+    if (state!=undefined) {
+        state[row][column] = color;
+    }
 
     var drawy =
         column % 2 == 0
